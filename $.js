@@ -1,6 +1,6 @@
 //-- SELECTOR FUNCTION --//
 
-// This simplifies node selection in a jQuery-like fashion, bloat free.
+// This simplifies node selection in a jQuery-like fashion, dependency free.
 // Looks like jQuery, but is absolutely not jQuery and cannot be used with jQuery.
 
 // Ex: $('#myId')
