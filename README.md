@@ -4,6 +4,8 @@ Simplified node selection and attribute manipulation in plain Javascript. Minima
 
 <br>
 
+## Functions
+
 The `$()` function is effectively just `document.querySelectorAll()`, and will either return `null` if nothing was found, the node if there's a single match, or the entire nodeList if there are multiple matches.
 
 <br>
@@ -41,3 +43,36 @@ While any `ƒ()` attribute may be `key="value"` specified, `#` and `.` may be us
 <br>
 
 What the `?` operator returns may vary depending on what is query and what is found. This is enumerated in the code comments, [here](https://github.com/pxninja/not-jquery/blob/8f84aae1bb59dbcf48e8397d6df5049e8f3bb231/%24.js#L174).
+
+<br>
+
+## Prototypes
+
+Four object prototypes are included that work with any node or nodeList:
+1. `on()`
+2. `off()`
+3. `html()`
+4. `listeners()`
+
+<br>
+
+If you're familiar with `addEventListener` and `removeEventListener` then adopting `on` and `off` couldn't be easier. The meaningful benefit is that both `on` and `off` support nodeLists, aside from being more succinct.
+
+<br>
+
+For example...
+1. `$('a').on('click', myFunc())`
+2. `document.getElementById('myId').on('click', function(){...})`
+
+<br>
+
+The `html` prototype returns or modifies an element(s) innerHTML.
+1. `$('#myId').html()` gets and returns the innerHTML of the "myId" element
+2. `$('#myId').html('Hello')` sets the innerHTML of "myId" to "Hello"
+3. `$('#myId').html('Hello', 'World')` replaces innerHTML "Hello" with "World"
+
+<br>
+
+Lastly, it's occasionally useful to get a list of which elements have what listeners. This is where `listeners` can be useful.
+1. `$().listeners()` returns the windows listeners
+2. `$('a').listeners()` enumerates listeners attached to which `<a>` tag
