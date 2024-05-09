@@ -42,7 +42,7 @@ While any `ƒ()` attribute may be `key="value"` specified, `#` and `.` may be us
 
 <br>
 
-What the `?` operator returns may vary depending on what is query and what is found. This is enumerated in the code comments, [here](https://github.com/pxninja/not-jquery/blob/8f84aae1bb59dbcf48e8397d6df5049e8f3bb231/%24.js#L174).
+What the `?` operator returns may vary depending on what is query and what is found. This is enumerated in the code comments, [here](https://github.com/pxninja/not-jquery/blob/main/%24.js#L180).
 
 <br>
 
