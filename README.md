@@ -70,9 +70,3 @@ The `html` prototype returns or modifies an element(s) innerHTML.
 1. `$('#myId').html()` gets and returns the innerHTML of the "myId" element
 2. `$('#myId').html('Hello')` sets the innerHTML of "myId" to "Hello"
 3. `$('#myId').html('Hello', 'World')` replaces innerHTML "Hello" with "World"
-
-<br>
-
-Lastly, it's occasionally useful to get a list of which elements have what listeners. This is where `listeners` can be useful.
-1. `$().listeners()` returns the windows listeners
-2. `$('a').listeners()` enumerates listeners attached to which `<a>` tag
