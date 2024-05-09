@@ -1,3 +1,10 @@
+// $.js
+// https://github.com/pxninja/not-jquery/
+// 
+// Copyright (c) 2024, Samuel Davidson
+// Released under the MIT License
+// https://github.com/pxninja/not-jquery/blob/main/LICENSE
+
 //-- SELECTOR FUNCTION --//
 
 // This simplifies node selection in a jQuery-like fashion, dependency free.
@@ -18,7 +25,6 @@ function $ (selector, attributes) {
   }
   return !attributes ? selector : selector.ƒ(attributes);
 };
-
 
 
 // -- ATTRIBUTE MANIPULATION FUNCTION -- //
@@ -251,11 +257,12 @@ Object.prototype.ƒ = function (string) {
 function ƒ_getNodeList (obj) {
   return obj instanceof NodeList ? obj : [obj];
 }
+
 function ƒ_eventListener (obj, task, type, func) {
   elems = ƒ_getNodeList(obj);
   switch (task) {
-    case 'add' : elems.forEach(e => e.addEventListener(type, func));    break;
-    case 'rem' : elems.forEach(e => e.removeEventListener(type, func)); break;
+    case 0 : elems.forEach(elem => elem.addEventListener(type, func));    break;
+    case 1 : elems.forEach(elem => elem.removeEventListener(type, func)); break;
     default: break;
   }
 }
@@ -267,32 +274,15 @@ function ƒ_eventListener (obj, task, type, func) {
 
 // Add listener
 Object.prototype.on = function (type, func) {
-  ƒ_eventListener(this, 'add', type, func);
+  ƒ_eventListener(this, 0, type, func);
   return this;
 };
 
 // Remove listener
 Object.prototype.off = function (type, func) {
-  ƒ_eventListener(this, 'rem', type, func);
+  ƒ_eventListener(this, 1, type, func);
   return this;
 };
-
-// Enumerate the event listeners and the elements they are attached to.
-Object.prototype.listeners = function () {
-  const result = {};
-  const elems  = ƒ_getNodeList(this);
-  elems.forEach(e => {
-    const list = getEventListeners(e);
-    for (const type in list ) {
-      if (list.hasOwnProperty(type)) {
-        if (!result[type]) result[type] = [];
-        result[type].push([e, list[type][0]]);
-      }
-    }
-  });
-  return Object.keys(result).length > 0 ? result : false;
-}
-
 
 // Set or get the innerHTML of a node
 Object.prototype.html = function (s,r) {
