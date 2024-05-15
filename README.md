@@ -52,7 +52,6 @@ Four object prototypes are included that work with any node or nodeList:
 1. `on()`
 2. `off()`
 3. `html()`
-4. `listeners()`
 
 <br>
 
