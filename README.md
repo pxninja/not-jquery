@@ -36,7 +36,7 @@ The `ƒ()` function has four operators that may be prefixed to the input:
 
 <br>
 
-While any `ƒ()` attribute may be `key="value"` specified, `#` and `.` may be used to abbreviate id's and classes, as one would with the `$()` selector. You may also perform an simultaneous operations to multiple attributes.
+While any `ƒ()` attribute may be `key="value"` specified, the `#` and `.` characters may be used to abbreviate id's and classes (as one would with the `$()` selector). The operation can be applied to multiple attributes, simultaneously.
 1. `$('a', '+ .link')`
 2. `$('.globe.icon', '+ title="Hello World" .navIcon')`
 
