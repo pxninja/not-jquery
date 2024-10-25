@@ -25,11 +25,13 @@ const ø = (function(){
   // Add listener
   Object.prototype.on = function (event, ƒunction) {
     toggleEventListener(this, event, ƒunction, 1)
+    return this
   }
 
   // Remove listener
   Object.prototype.off = function (event, ƒunction) {
     toggleEventListener(this, event, ƒunction, 0)
+    return this
   }
 
   // Placing logic outside prototypes reduces volume of exported code
