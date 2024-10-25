@@ -5,137 +5,128 @@
 // Released under the MIT License
 // https://github.com/pxninja/not-jquery/blob/main/LICENSE
 
+const ø = (function(){
 
-//-- SELECTOR PROTOTYPE --//
-
-// This prototype simplifies node selection in a jQuery-like fashion, dependency free.
-// Looks like jQuery, but is absolutely not jQuery and cannot be used with jQuery.
-
-// Ex: $('#myId')
-// Ex: $('#myId','.show')
-
-Object.prototype.$ = function (selector = window, attributes) {
-
-  // Allow for array-like node selection, where $(0) is the <head>,
-  // $(1) is the <body>, $(1, 0) is the first <body> node, etc.
-  if ($ƒ.isNumber(attributes)) attributes = String(attributes)
-  if ($ƒ.isNumber(selector)) selector = $ƒ.getChildNode($ƒ.getNode('html')[0], selector)
-
-  // Select the specified node(s)
-  if ($ƒ.isString(selector)) {
-    let nodes = $ƒ.getNode(selector)
-    selector = nodes.length === 0 ? null :
-               nodes.length === 1 ? nodes[0] :
-               nodes
-  }
-  return attributes ? selector.ƒ(attributes) : selector
-}
-
-// -- ATTRIBUTE MANIPULATION PROTOTYPE -- //
-
-// Can be used in conjunction with, or independent of, the $ prototype.
-// Ex: $('body', '.show') === $('body').ƒ('.show') === document.querySelectorAll('body')[0].ƒ('.show')
-
-Object.prototype.ƒ = function (string) {
-
-  // If the string is actually a number, treat it like an index
-  // and return the corresponding node, where 'obj.ƒ(0)'
-  // is the first node, 'obj.ƒ(-1)'' is the last, etc.
-
-  if ($ƒ.isNumber(string)) {
-    return $ƒ.getChildNode(this, string)
+  // $election prototype
+  Object.prototype.$ = function (selector, attributes) {
+    return $election(selector, attributes)    
   }
 
-  // Exit if no object or string exist, or if the string is not a 'string'
-  if (!this || !string || $ƒ.isString($ƒ.stringToInteger(string))) return this
+  // ƒunction prototype
+  Object.prototype.ƒ = function (string) {
+    return ƒunction(this, string)
+  }
 
-  // If the first character specifies an operation, perform that operation,
-  // otherwise toggle the inclusion / exclusion of a given attribute.
-  string = string.trim()
-  let operator = string[0]
-  let attributes = $ƒ.parseForAttrs('?+-±'.includes(operator) ? string.slice(1, string.length) : string)
-  return operator === '?'
-         ? $ƒ.getAttrs(this, attributes)
-         : $ƒ.updateAttrs(this, attributes, operator)
-}
+  // Set or get the innerHTML of a node
+  Object.prototype.html = function (find, replace) {
+    return html(this, find, replace)
+  }
 
+  // Add listener
+  Object.prototype.on = function (event, ƒunction) {
+    toggleEventListener(this, event, ƒunction, 1)
+  }
 
-//-- OTHER OBJECT PROTOTYPES --//
+  // Remove listener
+  Object.prototype.off = function (event, ƒunction) {
+    toggleEventListener(this, event, ƒunction, 0)
+  }
 
-// These are very similar to the regular JS event listener declarations,
-// but more succinct and capable of looping through a node list.
+  // Placing logic outside prototypes reduces volume of exported code
+  // ʕʘˬʘʔ
 
-// Add listener
-Object.prototype.on = function (type, func) {
-  $ƒ.eventListener(this, 1, type, func)
-  return this
-}
+  const $election = (selector = window, attributes) => {
+    // Enable array-like node selection, where $(0) is the <head>,
+    // $(1) is the <body>, $(1,0) is the first <body> node, etc.
+    if (isNumber(attributes)) attributes = String(attributes)
+    if (isNumber(selector)) selector = getChildNode(getNode('html')[0], selector)
 
-// Remove listener
-Object.prototype.off = function (type, func) {
-  $ƒ.eventListener(this, 0, type, func)
-  return this
-}
+    // Select the specified node(s)
+    if (isString(selector)) {
+      let nodes = getNode(selector)
+      selector = nodes.length === 0 ? null :
+                 nodes.length === 1 ? nodes[0] :
+                 nodes
+    }
+    return attributes ? selector.ƒ(attributes) : selector
+  }
 
-// Set or get the innerHTML of a node
-Object.prototype.html = function (find, replace) {
-  return $ƒ.innerHTML(this, find, replace)
-}
+  const ƒunction = (nodes, string) => {
+    // Treat numbers like a node index, akin to the $() prototype
+    if (isNumber(string)) return getChildNode(nodes, string)
 
+    // Exit if no object or string exist, or no string type
+    if (!nodes || !string || isString(parseForInteger(string))) return nodes
 
-//-- HELPERS --//
+    // If the first character specifies an operation, perform that operation,
+    // otherwise toggle the inclusion / exclusion of a given attribute.
+    string = trimString(string)
+    let operator = string[0]
+    let attributes = parseForAttrs(inString('?+-±', operator) ? sliceString(string) : string)
 
-// These methods are used by the prototypes. Moving this logic
-// outside their definitions helps improve minification, and
-// reduces the volume of exported code (only code directly
-// defined in a prototype is exported).
-// ʕʘˬʘʔ
+    if (operator === '?') {
+      let result = []
+      listOfNodes(nodes).forEach(element => result.push(evalAttrs(element, attributes)))
+      return result.length > 1 ? result : result[0]
+    } else {
+      listOfNodes(nodes).forEach(element => addRemoveToggle(element, attributes, operator))
+      return nodes
+    }
+  }
 
-// $elector ƒunctions
-const $ƒ = {
+  const parseForInteger = (value) => {
+    return parseInt(value)
+  }
 
-  noop: () => {
-    return undefined
-  },
+  const inString = (string, character) => {
+    return string.includes(character)
+  }
 
-  stringToInteger: (val) => {
-    return parseInt(val)
-  },
+  const trimString = (string) => {
+    return string.trim()
+  }
 
-  isNumber: (val) => {
-    let i = $ƒ.stringToInteger(val)
-    return !isNaN(i) && typeof i === 'number'
-  },
+  const sliceString = (string) => {
+    return trimString(string).slice(1)
+  }
 
-  isString: (val) => {
-    return typeof val === 'string'
-  },
+  const isSameType = (a, b) => {
+    return typeof a === b
+  }
 
-  getNode: (selector) => {
+  const isNumber = (number) => {
+    let integer = parseForInteger(number)
+    return !isNaN(integer) && isSameType(i, 'number')
+  }
+
+  const isString = (string) => {
+    return isSameType(string, 'string')
+  }
+
+  const attrIsClass = (string1, array, string2 = 'class') => {
+    return !array
+           ? string1 === string2 && !isString(array)
+           : string1 === string2 && Array.isArray(array)
+  }
+
+  const instOf = (object, constructor = NodeList) => {
+    return object instanceof constructor
+  }
+
+  const listOfNodes = (object) => {
+    return instOf(object) ? object : [object]
+  }
+
+  const getNode = (selector) => {
     return document.querySelectorAll(selector)
-  },
+  }
 
-  getChildNode: (node, num) => {
-    let i = $ƒ.stringToInteger(num)
-    return i < 0 ? node.children[node.children.length + i] : node.children[i]
-  },
+  const getChildNode = (node, number) => {
+    let index = parseForInteger(number)
+    return index < 0 ? node.children[node.children.length + index] : node.children[index]
+  }
 
-  eventListener: (obj = window, task, type, func) => {
-    let elems = obj instanceof NodeList ? obj : [obj]
-    task > 0
-      ? elems.forEach(elem => elem.addEventListener(type, func))
-      : elems.forEach(elem => elem.removeEventListener(type, func))
-  },
-
-  innerHTML: (elem = document.documentElement, find, replace) => {
-    if (!$ƒ.isString(find)) return !elem.innerHTML ? false : elem.innerHTML
-    if ($ƒ.isString(replace)) return elem.innerHTML = elem.innerHTML.replace(find, replace)
-    return find[0] === '+' ? elem.innerHTML += find.trim().slice(1) :
-           find[0] === '-' ? elem.innerHTML :
-           elem.innerHTML = find.trim()
-  },
-
-  parseForAttrs: (string) => {
+  const parseForAttrs = (string) => {
     // Matches: #idString    | .className   | key="v1" or key="v1 v2 v3 ..."   | key=val  | keyOnly
     let regex =/#([^\s#."']+)|\.([^\s#."']+)|([\w-]+)\s*=\s*(?:["']([^"']+)["']|([^"' ]+))|(\b[\w-]+\b)/g
 
@@ -145,23 +136,41 @@ const $ƒ = {
       match[1] ? result.id = match[1] :
       match[2] ? result.class = [...(result.class || []), match[2]] : 
       match[3] ?
-        match[3] === 'class' && (match[4] || match[5]) ?
+        attrIsClass(match[3]) && (match[4] || match[5]) ?
           result.class = (match[4] ?? match[5]).split(/\s+/) :
           result[match[3]] = match[4] ?? match[5] :
       match[6] ? result[match[6]] = '' : 
-      $ƒ.noop()
+      undefined
     }
     return result
-  },
+  }
 
-  evalAttr: (element, attributes) => {
+  const keys = (object) => {
+    return Object.keys(object)
+  }
+
+  const vals = (object) => {
+    return Object.values(object)
+  }
+
+  const homogenous = (object, length) => {
+    return (instOf(object, Object) ? vals(object) : object).every(value => value === true || (value === false && length > 1)) && length > 0
+  }
+
+  const attr = (element, key, value) => {
+    return null != value  ? element.setAttribute(key, value) :
+           value === null ? element.removeAttribute(key) :
+           element.getAttribute(key)
+  }
+
+  const evalAttrs = (element, attributes) => {
     let result = {}
 
-    // Immediately return if 'element' is not an Element
-    if (!(element instanceof Element)) return
+    // Immediately return if not an Element
+    if (!instOf(element, Element)) return
 
-    // If no specific query was made, get all attributes
-    let ambiguous = Object.keys(attributes).length === 0
+    // Get all attributes if no specific query was made
+    let ambiguous = keys(attributes).length === 0
     if (ambiguous) {
       for (let i = 0; i < element.attributes.length; i++) {
         result[element.attributes[i].name] = element.attributes[i].value
@@ -173,19 +182,21 @@ const $ƒ = {
         if (attributes.hasOwnProperty(key)) {
           let value = attributes[key]
 
-          // If querying for classes...
-          if (key === 'class' && Array.isArray(value)) {
+          // When it's a class...
+          if (attrIsClass(key, value)) {
             value.forEach(className => result.class = [...(result.class || []), element.classList.contains(className)])
-            result.class = result.class.every(boolean => boolean === true)
+            result.class = homogenous(result.class, 1)
             continue
           }
 
           // Get the attributes value when no query value is available to compare
-          let elemValue = element.getAttribute(key)
+          // let elemValue = element.getAttribute(key)
+          let elemValue = attr(element, key)
           if (!value) {
-            result[key] = elemValue ?? $ƒ.noop()
+            result[key] = elemValue ?? undefined
             continue
           }
+
           // Otherwise compare the query and attribute values
           result[key] = elemValue ? value === elemValue : false
         }
@@ -193,39 +204,74 @@ const $ƒ = {
     }
 
     // Return the most salient result
-    return !ambiguous && Object.keys(result).length === 1 ? result[Object.keys(result)[0]] :
-           Object.values(result).every(value => value === true)  ? true :
-           Object.values(result).every(value => value === false) ? false :
-           result ?? $ƒ.noop()
-  },
+    let val = vals(result)
+    let valLen = val.length
+    return !ambiguous && valLen === 1 ? result[val[0]] :
+           homogenous(result, valLen) ? result[val[0]] :
+           valLen > 0 ? result :
+           undefined
+  }
 
-  getAttrs: (This, attributes) => {
-    let result = []
-    let elements = This instanceof NodeList ? This : [nodes]
-    elements.forEach(element => result.push($ƒ.evalAttr(element, attributes)))
-    return result.length > 1 ? result : result[0]
-  },
-
-  addRemoveToggle: (element, attributes, operation) => {
+  const addRemoveToggle = (element, attributes, operation) => {
+    // For each element attribute...
     for (let key in attributes) {
       if (attributes.hasOwnProperty(key)) {
         let value = attributes[key]
-        key === 'class' && Array.isArray(value)
-        ? operation == '+' ? value.forEach(className => element.classList.add(className)) :
-          operation == '-' ? value.forEach(className => element.classList.remove(className)) :
-          value.forEach(className => element.classList.toggle(className))
-        : operation === '+' ? element.setAttribute(key, value) :
-          operation === '-' ? element.removeAttribute(key, value) :
-          element.getAttribute(key) === value ? element.removeAttribute(key) : element.setAttribute(key, value)
+        // When it's a class...
+        attrIsClass(key, value)
+        ? value.forEach(className => {
+            let list = element.classList
+            operation === '+' ? list.add(className) :
+            operation === '-' ? list.remove(className) :
+            list.toggle(className)
+            })
+
+        // All others...
+        : operation === '+' ? attr(element, key, value) :
+          operation === '-' ? attr(element, key, null) :
+          attr(element, key) === value
+          ? attr(element, key, null)
+          : attr(element, key, value)
       }
     }
-  },
-
-  updateAttrs: (This, attributes, operation) => {
-    let elements = This instanceof NodeList ? This : [This]
-    elements.forEach(element => $ƒ.addRemoveToggle(element, attributes, operation))
-    return This
   }
-}
 
-export default { $, ƒ, on, off, html }
+  const getHTML = (element) => {
+    return element.innerHTML
+  }
+
+  const setHTML = (element, newValue) => {
+    return element.innerHTML = newValue
+  }
+
+  const addHTML = (element, newValue, prepend) => {
+    let newString = sliceString(newValue)
+    let oldString = getHTML(element)
+    return setHTML(element, prepend ? newString + oldString : oldString + newString)
+  }
+
+  const replaceHTML = (element, find, replace) => {
+    return setHTML(element, getHTML(element).replace(find, replace))
+  }
+
+  const html = (element = document.documentElement, find, replace) => {
+    return !isString(find) && !instOf(find, RegExp)
+            ? getHTML(element) ?? false
+            : isString(replace) || instOf(find, RegExp)
+              ? replaceHTML(element, find, replace || '')
+              : inString('<+', find[0]) ? addHTML(element, find)
+              : find[0] === '>' ? addHTML(element, find, true)
+              : find[0] === '-' ? replaceHTML(element, find, '')
+              : setHTML(element, trimString(find))
+  }
+
+  const toggleEventListener = (object = window, event, ƒunction, oı) => {
+    listOfNodes(object).forEach(element => {
+      oı > 0
+      ? element.addEventListener(event, ƒunction)
+      : element.removeEventListener(event, ƒunction)
+    })
+  }
+})()
+
+export default ø
