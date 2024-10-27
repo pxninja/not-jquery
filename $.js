@@ -5,7 +5,7 @@
 // Released under the MIT License
 // https://github.com/pxninja/not-jquery/blob/main/LICENSE
 
-const ø = (function(){
+export default (function() {
 
   // $election prototype
   Object.prototype.$ = function (selector, attributes) {
@@ -275,5 +275,3 @@ const ø = (function(){
     })
   }
 })()
-
-export default ø
