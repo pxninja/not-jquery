@@ -50,7 +50,7 @@ export default (function() {
                  nodes.length === 1 ? nodes[0] :
                  nodes
     }
-    return attributes ? selector.ƒ(attributes) : selector
+    return selector && attributes ? selector.ƒ(attributes) : selector
   }
 
   const ƒunction = (nodes, string) => {
@@ -192,7 +192,6 @@ export default (function() {
           }
 
           // Get the attributes value when no query value is available to compare
-          // let elemValue = element.getAttribute(key)
           let elemValue = attr(element, key)
           if (!value) {
             result[key] = elemValue ?? undefined
@@ -261,8 +260,7 @@ export default (function() {
             ? getHTML(element) ?? false
             : isString(replace) || instOf(find, RegExp)
               ? replaceHTML(element, find, replace || '')
-              : inString('<+', find[0]) ? addHTML(element, find)
-              : find[0] === '>' ? addHTML(element, find, true)
+              : inString('+', find[0]) ? addHTML(element, find)
               : find[0] === '-' ? replaceHTML(element, find, '')
               : setHTML(element, trimString(find))
   }
