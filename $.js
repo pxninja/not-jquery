@@ -207,8 +207,8 @@ export default (function() {
     // Return the most salient result
     let val = vals(result)
     let valLen = val.length
-    return !ambiguous && valLen === 1 ? result[val[0]] :
-           homogenous(result, valLen) ? result[val[0]] :
+    return !ambiguous && valLen === 1 ? val[0] :
+           homogenous(result, valLen) ? val[0] :
            valLen > 0 ? result :
            undefined
   }
